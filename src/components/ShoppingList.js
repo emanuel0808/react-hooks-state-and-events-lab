@@ -1,24 +1,68 @@
-import React from "react";
-import Item from "./Item";
+import "@testing-library/jest-dom";
+import { render, screen, fireEvent } from "@testing-library/react";
+import ShoppingList from "../components/ShoppingList";
 
-function ShoppingList({ items }) {
-  return (
-    <div className="ShoppingList">
-      <div className="Filter">
-        <select name="filter">
-          <option value="All">Filter by category</option>
-          <option value="Produce">Produce</option>
-          <option value="Dairy">Dairy</option>
-          <option value="Dessert">Dessert</option>
-        </select>
-      </div>
-      <ul className="Items">
-        {items.map((item) => (
-          <Item key={item.id} name={item.name} category={item.category} />
-        ))}
-      </ul>
-    </div>
-  );
-}
+const testData = [
+  { id: 1, name: "Yogurt", category: "Dairy" },
+  { id: 2, name: "Pomegranate", category: "Produce" },
+  { id: 3, name: "Lettuce", category: "Produce" },
+  { id: 4, name: "String Cheese", category: "Dairy" },
+  { id: 5, name: "Cookies", category: "Dessert" },
+];
 
-export default ShoppingList;
+test("displays all items when initially rendered", () => {
+  render(<ShoppingList items={testData} />);
+  const itemList = screen.getByTestId("item-list");
+  expect(itemList.children).toHaveLength(testData.length);
+});
+
+test("displays only items that match the selected category", () => {
+  render(<ShoppingList items={testData} />);
+
+  fireEvent.change(screen.getByRole("combobox"), {
+    target: { value: "Dairy" },
+  });
+
+  const itemList = screen.getByTestId("item-list");
+  expect(itemList.children).toHaveLength(2);
+
+  fireEvent.change(screen.getByRole("combobox"), {
+    target: { value: "Dessert" },
+  });
+
+  expect(itemList.children).toHaveLength(1);
+});import "@testing-library/jest-dom";
+import { render, screen, fireEvent } from "@testing-library/react";
+import ShoppingList from "../components/ShoppingList";
+
+const testData = [
+  { id: 1, name: "Yogurt", category: "Dairy" },
+  { id: 2, name: "Pomegranate", category: "Produce" },
+  { id: 3, name: "Lettuce", category: "Produce" },
+  { id: 4, name: "String Cheese", category: "Dairy" },
+  { id: 5, name: "Cookies", category: "Dessert" },
+];
+
+test("displays all items when initially rendered", () => {
+  render(<ShoppingList items={testData} />);
+  const itemList = screen.getByTestId("item-list");
+  expect(itemList.children).toHaveLength(testData.length);
+});
+
+test("displays only items that match the selected category", () => {
+  render(<ShoppingList items={testData} />);
+
+  fireEvent.change(screen.getByRole("combobox"), {
+    target: { value: "Dairy" },
+  });
+
+  const itemList = screen.getByTestId("item-list");
+  expect(itemList.children).toHaveLength(2);
+
+  fireEvent.change(screen.getByRole("combobox"), {
+    target: { value: "Dessert" },
+  });
+
+  expect(itemList.children).toHaveLength(1);
+});
+

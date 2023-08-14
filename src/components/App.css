@@ -1,0 +1,27 @@
+/* Default styles for light mode */
+.App {
+    background-color: #f0f0f0;
+    color: #333;
+    padding: 20px;
+  }
+  
+  /* Styles for dark mode */
+  .App.dark {
+    background-color: #333;
+    color: #f0f0f0;
+  }
+  
+  /* Button styles */
+  button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  
+  /* Button styles for dark mode */
+  .App.dark button {
+    background-color: #555;
+  }
+  

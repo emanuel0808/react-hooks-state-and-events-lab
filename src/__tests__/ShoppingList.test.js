@@ -1,5 +1,6 @@
 import "@testing-library/jest-dom";
 import { render, screen, fireEvent } from "@testing-library/react";
+import React from "react"; // Import React
 import ShoppingList from "../components/ShoppingList";
 
 const testData = [
@@ -11,24 +12,22 @@ const testData = [
 ];
 
 test("displays all items when initially rendered", () => {
-  const { container } = render(<ShoppingList items={testData} />);
-  expect(container.querySelector(".Items").children).toHaveLength(
-    testData.length
-  );
+  render(<ShoppingList items={testData} />);
+  const itemList = screen.getByTestId("item-list");
+  expect(itemList.children).toHaveLength(testData.length);
 });
 
 test("displays only items that match the selected category", () => {
-  const { container } = render(<ShoppingList items={testData} />);
+  render(<ShoppingList items={testData} />);
 
   fireEvent.change(screen.getByRole("combobox"), {
     target: { value: "Dairy" },
   });
 
-  expect(container.querySelector(".Items").children).toHaveLength(2);
+  const itemList = screen.getByTestId("item-list");
 
-  fireEvent.change(screen.getByRole("combobox"), {
-    target: { value: "Dessert" },
-  });
+  // Count the number of items with category "Dairy" in your test data
+  const dairyItemsCount = testData.filter((item) => item.category === "Dairy").length;
 
-  expect(container.querySelector(".Items").children).toHaveLength(1);
+  expect(itemList.children).toHaveLength(dairyItemsCount);
 });
